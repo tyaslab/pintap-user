@@ -1,19 +1,28 @@
-import { IUser } from "../entity/user";
+import { IUser } from "../entity/user"
+import { v4 } from "uuid"
 
 export class UserRepository {
-    save(user: IUser) {
+  constructor (private _docClient: AWS.DynamoDB.DocumentClient) {}
 
-    }
+  save(user: IUser) {
+    return this._docClient.put({
+      TableName: 'UsersTable',
+      Item: {
+        ...user,
+        userID: v4()
+      }
+    })
+  }
 
-    findOneById(userId: number) {
+  findOneById(userId: number) {
 
-    }
+  }
 
-    findAll() {
+  findAll() {
 
-    }
+  }
 
-    remove(userId: number) {
+  remove(userId: number) {
 
-    }
+  }
 }

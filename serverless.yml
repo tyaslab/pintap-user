@@ -1,15 +1,90 @@
-service: serverlessSetup
+service: pintapUsers
 
 provider:
   name: aws
   runtime: nodejs12.x
-  region: us-west-1
+  region: ap-southeast-3
+  environment:
+    tableName: ${self:custom.tableName}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+        - s3:*
+        - ses:*
+      Resource: '*'
 
-# functions
-functions:
-
-
-# Serverless plugins
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
+  - serverless-dynamodb-local
+
+package:
+  individually: true
+
+custom:
+  tableName: usersTable
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    migration:
+      dir: offline/migrations
+
+functions:
+  ping:
+    handler: src/controller/ping.handler
+    events:
+      - http:
+          path: /ping
+          method: get
+  createUser:
+    handler: src/controller/user/create_user.handler
+    events:
+      - http:
+          path: /user
+          method: post
+  getUserDetail:
+    handler: src/controller/user/get_user_detail.handler
+    events:
+      - http:
+          path: /user/{id}
+          method: get
+  getUserList:
+    handler: src/controller/user/get_user_list.handler
+    events:
+      - http:
+          path: /user
+          method: get
+  updateUser:
+    handler: src/controller/user/update_user.handler
+    events:
+      - http:
+          path: /user
+          method: put
+  deleteUser:
+    handler: src/controller/user/delete_user.handler
+    events:
+      - http:
+          path: /user/{id}
+          method: delete
+
+resources:
+  Resources:
+    UsersTable:
+      Type: Aws::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        AtrributeDefinitions:
+          - AttributeName: ID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: ID
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
