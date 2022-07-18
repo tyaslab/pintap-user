@@ -1,5 +1,6 @@
 import { IUser } from "../entity/user";
 import { UserRepository } from "../repository/user";
+import { generateAccessToken } from "../utils/token";
 
 export class UserService {
     constructor (private readonly _userRepository: UserRepository) {}
@@ -22,5 +23,25 @@ export class UserService {
 
     async deleteUser(userId: number) {
         return await this._userRepository.remove(userId)
+    }
+
+    async loginUser(name: string, password: string, isAdmin: boolean) {
+        const user: any = await this._userRepository.getUserByNameAndPassword(name, password)
+        if (user == null) {
+            return null
+        }
+
+        const tokenExpiresAt = process.env.TOKEN_EXPIRES_AT || '60'
+        const expiresAt = Math.floor(new Date().getTime() / 100) + parseInt(tokenExpiresAt)
+        const accessToken = await generateAccessToken(user.id, isAdmin, expiresAt)
+
+        const result = {
+            id: user.id,
+            name: user.name,
+            accessToken: accessToken,
+            expiresAt: expiresAt
+        }
+
+        return result
     }
 }

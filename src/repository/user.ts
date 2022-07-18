@@ -1,8 +1,6 @@
 import { IUser } from "../entity/user"
 import { v4 } from "uuid"
-
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+import { comparePassword, generatePassword } from "../utils/password"
 
 export class UserRepository {
   private _tableName: string = 'UsersTable'
@@ -11,7 +9,7 @@ export class UserRepository {
   async create(user: IUser) {
     const now = new Date().toISOString()
     user.id = v4()
-    user.password = await this.generatePassword(user.password)
+    user.password = await generatePassword(user.password)
     user.createdAt = now
     user.updatedAt = now
     user.deletedAt = '-'
@@ -37,7 +35,7 @@ export class UserRepository {
       ExpressionAttributeValues: {
         ':name': user.name,
         ':updatedAt': now,
-        ':password': await this.generatePassword(user.password)
+        ':password': await generatePassword(user.password)
       }
     }
 
@@ -96,19 +94,36 @@ export class UserRepository {
     await this._docClient.update(params).promise()
   }
 
-  async generatePassword(rawPassword: string) {
-    return await bcrypt.hash(rawPassword, 5)
-  }
+  async getUserByNameAndPassword(name: string, password: string) {
+    // get user by name and password
+    const params = {
+      TableName: this._tableName,
+      ExpressionAttributeNames: {
+        '#deletedAt': 'deletedAt',
+        '#name': 'name'
+      },
+      ExpressionAttributeValues: {
+        ':deletedAt': '-',
+        ':name': name
+      },
+      // KeyConditionExpression: 'deletedAt = :deletedAt'
+      FilterExpression: '#deletedAt = :deletedAt AND #name = :name'
+    }
 
-  async comparePassword(rawPassword: string, password: string) {
-    return await bcrypt.compare(rawPassword, password)
-  }
+    const data = await this._docClient.scan(params).promise()
 
-  async generateAccessToken(userId: string, isAdmin: boolean) {
-    return jwt.sign({id: userId, isAdmin}, process.env.secretKey)
-  }
+    if (!data.Items) {
+      return null
+    }
 
-  async decodeAccessToken(accessToken: string) {
-    return jwt.verify(accessToken, process.env.secretKey)
+    const user = data.Items[0]
+
+    const isCorrectPassword = await comparePassword(password, user.password)
+
+    if (!isCorrectPassword) {
+      return null
+    }
+
+    return user
   }
 }
