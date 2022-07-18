@@ -3,7 +3,7 @@ service: pintapUsers
 provider:
   name: aws
   runtime: nodejs12.x
-  region: ap-southeast-3
+  region: ap-southeast-1
   environment:
     tableName: ${self:custom.tableName}
   iamRoleStatements:
@@ -23,14 +23,17 @@ package:
   individually: true
 
 custom:
-  tableName: usersTable
+  tableName: UsersTable
   dynamodb:
     stages:
       - dev
     start:
+      docker: true
       port: 8000
       inMemory: true
       migrate: true
+      seed: true
+      convertEmptyValues: true
     migration:
       dir: offline/migrations
 
