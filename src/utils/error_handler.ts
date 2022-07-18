@@ -1,6 +1,7 @@
-export const serverErrorHandler = () => {
+export const serverErrorHandler = (err: any) => {
+    console.error(err)
     return {
         statusCode: 500,
-        body: 'An error occured'
+        body: JSON.stringify('An error occured')
     }
 }
