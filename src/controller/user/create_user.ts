@@ -6,8 +6,7 @@ import { serverErrorHandler } from '../../utils/error_handler';
 export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
     const parsedBody = JSON.parse(_event.body || '')
-    const result = userService.createUser(parsedBody)
-    console.log(result)
+    await userService.createUser(parsedBody)
     return {
       statusCode: 204,
       body: ''

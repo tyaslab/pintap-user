@@ -5,7 +5,7 @@ export class UserService {
     constructor (private readonly _userRepository: UserRepository) {}
 
     async createUser(user: IUser) {
-        return await this._userRepository.save(user)
+        return await this._userRepository.create(user)
     }
 
     async getUserList() {
@@ -17,7 +17,7 @@ export class UserService {
     }
 
     async updateUser(user: IUser) {
-        return await this._userRepository.save(user)
+        return await this._userRepository.update(user)
     }
 
     async deleteUser(userId: number) {

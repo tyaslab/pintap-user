@@ -4,4 +4,5 @@ export interface IUser {
     password: string
     createdAt: string
     updatedAt: string
+    deletedAt: string
 }

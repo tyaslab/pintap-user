@@ -1,26 +1,24 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { userService } from '../../bootstrap';
+import { serverErrorHandler } from '../../utils/error_handler';
 
 export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
-    const { id } = _event.pathParameters
-    const item = userService.getUserDetail(id)
+    const { id }: any = _event.pathParameters
+    const item = await userService.getUserDetail(id)
     if (item == null) {
       return {
         statusCode: 400,
-        body: JSON.stringify('user not found')
+        body: JSON.stringify('User not found')
       }
     }
 
     const response = {
       statusCode: 200,
       body: JSON.stringify(item),
-    };
+    }
     return response
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: 'An error occured',
-    };
+    return serverErrorHandler(err)
   }
-};
+}
