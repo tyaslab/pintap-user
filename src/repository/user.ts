@@ -1,6 +1,9 @@
 import { IUser } from "../entity/user"
 import { v4 } from "uuid"
 
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 export class UserRepository {
   private _tableName: string = 'UsersTable'
   constructor (private _docClient: AWS.DynamoDB.DocumentClient) {}
@@ -8,6 +11,7 @@ export class UserRepository {
   async create(user: IUser) {
     const now = new Date().toISOString()
     user.id = v4()
+    user.password = await this.generatePassword(user.password)
     user.createdAt = now
     user.updatedAt = now
     user.deletedAt = '-'
@@ -33,7 +37,7 @@ export class UserRepository {
       ExpressionAttributeValues: {
         ':name': user.name,
         ':updatedAt': now,
-        ':password': user.password
+        ':password': await this.generatePassword(user.password)
       }
     }
 
@@ -90,5 +94,21 @@ export class UserRepository {
     }
 
     await this._docClient.update(params).promise()
+  }
+
+  async generatePassword(rawPassword: string) {
+    return await bcrypt.hash(rawPassword, 5)
+  }
+
+  async comparePassword(rawPassword: string, password: string) {
+    return await bcrypt.compare(rawPassword, password)
+  }
+
+  async generateAccessToken(userId: string, isAdmin: boolean) {
+    return jwt.sign({id: userId, isAdmin}, process.env.secretKey)
+  }
+
+  async decodeAccessToken(accessToken: string) {
+    return jwt.verify(accessToken, process.env.secretKey)
   }
 }
