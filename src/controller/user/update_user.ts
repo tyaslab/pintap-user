@@ -8,8 +8,11 @@ export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayP
     let user = await userService.getUserDetail(id)
     if (user == null) {
       return {
-        statusCode: 400,
-        body: JSON.stringify('User not found')
+        statusCode: 404,
+        body: JSON.stringify({
+          'message': 'User not found',
+          'code': 404
+        })
       }
     }
 
