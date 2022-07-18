@@ -1,16 +1,17 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { userService } from '../../bootstrap';
+import { serverErrorHandler } from '../../utils/error_handler';
 
 export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
-    const response = {
-      statusCode: 200,
-      body: 'HELLO YOU ARE MY FRIEND!!!',
-    };
-    return response;
-  } catch (err) {
+    const parsedBody = JSON.parse(_event.body || '')
+    const result = userService.createUser(parsedBody)
+    console.log(result)
     return {
-      statusCode: 500,
-      body: 'An error occured',
-    };
+      statusCode: 204,
+      body: ''
+    }
+  } catch (err) {
+    return serverErrorHandler(err)
   }
-};
+}

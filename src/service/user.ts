@@ -4,23 +4,23 @@ import { UserRepository } from "../repository/user";
 export class UserService {
     constructor (private readonly _userRepository: UserRepository) {}
 
-    createUser(user: IUser) {
-        this._userRepository.save(user)
+    async createUser(user: IUser) {
+        return await this._userRepository.save(user)
     }
 
-    getUserList() {
-        this._userRepository.findAll()
+    async getUserList() {
+        return await this._userRepository.findAll()
     }
 
-    getUserDetail(userId: number) {
-        this._userRepository.findOneById(userId)
+    async getUserDetail(userId: string) {
+        return await this._userRepository.findOneById(userId)
     }
 
-    updateUser(user: IUser) {
-        this._userRepository.save(user)
+    async updateUser(user: IUser) {
+        return await this._userRepository.save(user)
     }
 
-    deleteUser(userId: number) {
-        this._userRepository.remove(userId)
+    async deleteUser(userId: number) {
+        return await this._userRepository.remove(userId)
     }
 }
