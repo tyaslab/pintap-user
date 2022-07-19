@@ -143,3 +143,30 @@ Example error response:
 	"code": 400
 }
 ```
+
+
+## Authorization error response
+
+Token expired (HTTP status code: 401)
+```
+{
+	"message": "Token expired",
+	"code": 4011
+}
+```
+
+Invalid token (HTTP status code: 401)
+```
+{
+	"message": "Invalid token",
+	"code": 4012
+}
+```
+
+Forbidden (HTTP status code: 403)
+```
+{
+	"message": "You are not allowed",
+	"code": 403
+}
+```
