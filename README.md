@@ -75,8 +75,6 @@ Example response:
 
 3. Get User Detail (GET http://localhost:3000/dev/user/{id})
 
-Example request url: `http://localhost:3000/dev/user/8bc95db9-06fb-412b-bb75-da12a85bb672`
-
 Example response:
 ```
 {
