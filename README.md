@@ -37,8 +37,59 @@ $ npm run dev
 
 ## Endpoints
 1. Create User (POST http://localhost:3000/dev/user)
+
+Example request body:
+```
+{
+	"name": "aditya2345",
+	"password": "jamet2345"
+}
+```
+
+Example response:
+```
+{
+	"id": "8bc95db9-06fb-412b-bb75-da12a85bb672",
+	"name": "aditya2345",
+	"createdAt": "2022-07-19T04:49:56.176Z"
+}
+```
+
 2. Get User List (GET http://localhost:3000/dev/user)
+
+Example response:
+```
+[
+	{
+		"id": "4596214e-9822-45d3-87f7-ac067116a973",
+		"name": "aditya2345",
+		"createdAt": "2022-07-19T04:29:04.248Z"
+	},
+	{
+		"id": "807a6279-c7a4-43fc-b9e0-884d85ce90ac",
+		"name": "aditya234",
+		"createdAt": "2022-07-19T04:17:21.574Z"
+	}
+]
+```
+
 3. Get User Detail (GET http://localhost:3000/dev/user/{id})
+
+Example request url: `http://localhost:3000/dev/user/8bc95db9-06fb-412b-bb75-da12a85bb672`
+
+Example response:
+```
+{
+	"id": "8bc95db9-06fb-412b-bb75-da12a85bb672",
+	"name": "aditya2345",
+	"createdAt": "2022-07-19T04:49:56.176Z"
+}
+```
+
 4. Update User (PUT http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
+Note: user must be *admin OR user itself*
+
 5. Delete User (DELETE http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
+Note: user must be *admin*
+
 6. Login User (POST http://localhost:3000/dev/user/login)
