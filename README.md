@@ -1,5 +1,9 @@
 # Pintap - User
 
+A minimalist user service.
+
+Stack: aws serverless, Typescript, dynamodb with JWT authorization. Password encryption using bcrypt.
+
 ## Setup
 1. Make sure you have installed aws-cli and configure it. For more info: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
 
