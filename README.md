@@ -33,3 +33,12 @@ $ npm run dev
 ```
 
 7. You can access it via `http://localhost:3000`
+
+
+## Endpoints
+1. Create User (POST http://localhost:3000/dev/user)
+2. Get User List (GET http://localhost:3000/dev/user)
+3. Get User Detail (GET http://localhost:3000/dev/user/{id})
+4. Update User (PUT http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
+5. Delete User (DELETE http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
+6. Login User (POST http://localhost:3000/dev/user/login)
