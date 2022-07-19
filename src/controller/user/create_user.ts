@@ -13,10 +13,14 @@ export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayP
     // }
 
     const parsedBody = JSON.parse(_event.body || '')
-    await userService.createUser(parsedBody)
+    const user = await userService.createUser(parsedBody)
     return {
-      statusCode: 204,
-      body: ''
+      statusCode: 200,
+      body: JSON.stringify({
+        id: user.id,
+        name: user.name,
+        createdAt: user.createdAt
+      })
     }
   } catch (err) {
     return serverErrorHandler(err)

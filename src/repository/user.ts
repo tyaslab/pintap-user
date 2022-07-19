@@ -24,10 +24,12 @@ export class UserRepository {
     user.createdAt = now
     user.updatedAt = now
     user.deletedAt = '-'
-    return this._docClient.put({
+    this._docClient.put({
       TableName: this._tableName,
       Item: user
     }).promise()
+
+    return user
   }
 
   async update(user: IUser) {
