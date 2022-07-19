@@ -71,12 +71,14 @@ functions:
       - http:
           path: /user/{id}
           method: put
+          authorizer: validate
   deleteUser:
     handler: src/controller/user/delete_user.handler
     events:
       - http:
           path: /user/{id}
           method: delete
+          authorizer: validate
   loginUser:
     handler: src/controller/user/login_user.handler
     events:

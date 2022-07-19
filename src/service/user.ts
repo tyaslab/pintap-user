@@ -32,12 +32,13 @@ export class UserService {
         }
 
         const tokenExpiresAt = process.env.TOKEN_EXPIRES_AT || '60'
-        const expiresAt = Math.floor(new Date().getTime() / 100) + parseInt(tokenExpiresAt)
+        const expiresAt = Math.floor(new Date().getTime() / 1000) + parseInt(tokenExpiresAt)
         const accessToken = await generateAccessToken(user.id, isAdmin, expiresAt)
 
         const result = {
             id: user.id,
             name: user.name,
+            isAdmin: isAdmin,
             accessToken: accessToken,
             expiresAt: expiresAt
         }
