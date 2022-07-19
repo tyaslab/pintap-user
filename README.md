@@ -116,6 +116,8 @@ Example error response:
 
 6. Login User (POST http://localhost:3000/dev/user/login)
 
+If login as admin, don't forget to add "isAdmin: true" in the request body
+
 Example request:
 ```
 {
