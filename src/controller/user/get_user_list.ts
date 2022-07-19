@@ -12,9 +12,19 @@ export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayP
   
     const data = await userService.getUserList()
 
+    const result: any[] = []
+
+    data?.forEach((item) => {
+      result.push({
+        id: item.id,
+        name: item.name,
+        createdAt: item.createdAt
+      })
+    })
+
     const response = {
       statusCode: 200,
-      body: JSON.stringify(data),
+      body: JSON.stringify(result),
     }
 
     return response

@@ -23,9 +23,15 @@ export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayP
       }
     }
 
+    const result = {
+      id: item.id,
+      name: item.name,
+      createdAt: item.createdAt
+    }
+
     const response = {
       statusCode: 200,
-      body: JSON.stringify(item),
+      body: JSON.stringify(result),
     }
     return response
   } catch (err) {
