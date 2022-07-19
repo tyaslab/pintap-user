@@ -1,15 +1,26 @@
 import { IUser } from "../entity/user"
 import { v4 } from "uuid"
 import { comparePassword, generatePassword } from "../utils/password"
+import { ValidationError } from "../utils/error_handler"
 
 export class UserRepository {
   private _tableName: string = 'UsersTable'
   constructor (private _docClient: AWS.DynamoDB.DocumentClient) {}
 
+  async validateCreate(user: IUser) {
+
+  }
+
   async create(user: IUser) {
-    const now = new Date().toISOString()
+    // check name
+    const checkName = await this.getUserByName(user.name)
+    if (checkName != null) {
+      throw new ValidationError('Name already existed', 400)
+    }
+
     user.id = v4()
     user.password = await generatePassword(user.password)
+    const now = new Date().toISOString()
     user.createdAt = now
     user.updatedAt = now
     user.deletedAt = '-'
@@ -20,6 +31,11 @@ export class UserRepository {
   }
 
   async update(user: IUser) {
+    const checkName = await this.getUserByName(user.name)
+    if (checkName != null && user.id != checkName.id) {
+      throw new ValidationError('Name already existed', 400)
+    }
+
     const now = new Date().toISOString()
     const params = {
       TableName: this._tableName,
@@ -54,7 +70,7 @@ export class UserRepository {
 
     const item: any = data.Item
 
-    if (item.deletedAt != '-') {
+    if (item && item.deletedAt != '-') {
       return null
     }
 
@@ -94,7 +110,7 @@ export class UserRepository {
     await this._docClient.update(params).promise()
   }
 
-  async getUserByNameAndPassword(name: string, password: string) {
+  async getUserByName(name: string) {
     // get user by name and password
     const params = {
       TableName: this._tableName,
@@ -117,6 +133,14 @@ export class UserRepository {
     }
 
     const user = data.Items[0]
+    return user
+  }
+
+  async getUserByNameAndPassword(name: string, password: string) {
+    const user = await this.getUserByName(name)
+    if (!user) {
+      return null
+    }
 
     const isCorrectPassword = await comparePassword(password, user.password)
 

@@ -52,7 +52,6 @@ functions:
       - http:
           path: /user
           method: post
-          authorizer: validate
   getUserDetail:
     handler: src/controller/user/get_user_detail.handler
     events:
