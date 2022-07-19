@@ -87,9 +87,59 @@ Example response:
 ```
 
 4. Update User (PUT http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
+
 Note: user must be *admin OR user itself*
 
+Success response returns 204 No Content
+
+Example error response:
+```
+{
+	"message": "Name already existed",
+	"code": 400
+}
+```
+
 5. Delete User (DELETE http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
+
 Note: user must be *admin*
 
+Success response returns 204 No Content
+
+Example error response:
+```
+{
+	"message": "User not found",
+	"code": 404
+}
+```
+
 6. Login User (POST http://localhost:3000/dev/user/login)
+
+Example request:
+```
+{
+	"name": "aditya234",
+	"password": "strongpasswordever",
+	"isAdmin": true
+}
+```
+
+Example response:
+```
+{
+	"id": "807a6279-c7a4-43fc-b9e0-884d85ce90ac",
+	"name": "aditya234",
+	"isAdmin": true,
+	"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgwN2E2Mjc5LWM3YTQtNDNmYy1iOWUwLTg4NGQ4NWNlOTBhYyIsImlzQWRtaW4iOnRydWUsImV4cCI6MTY1ODIwNTA3MSwiaWF0IjoxNjU4MjA1MDExfQ.UiLWWV5oalIk48Fo9ldc9QeOMNckBjOHwsb44tdx8lI",
+	"expiresAt": 1658205071
+}
+```
+
+Example error response:
+```
+{
+	"message": "Invalid username/password",
+	"code": 400
+}
+```
