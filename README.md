@@ -1,5 +1,7 @@
 # Pintap - User
 
+## Intro
+
 A minimalist user service.
 
 Stack: aws serverless, Typescript, dynamodb with JWT authorization. Password encryption using bcrypt.
