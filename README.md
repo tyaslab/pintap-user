@@ -36,7 +36,7 @@ $ npm run dev
 
 
 ## Endpoints
-1. Create User (POST http://localhost:3000/dev/user)
+### 1. Create User (POST http://localhost:3000/dev/user)
 
 Example request body:
 ```
@@ -55,7 +55,7 @@ Example response:
 }
 ```
 
-2. Get User List (GET http://localhost:3000/dev/user)
+### 2. Get User List (GET http://localhost:3000/dev/user)
 
 Example response:
 ```
@@ -73,7 +73,7 @@ Example response:
 ]
 ```
 
-3. Get User Detail (GET http://localhost:3000/dev/user/{id})
+### 3. Get User Detail (GET http://localhost:3000/dev/user/{id})
 
 Example response:
 ```
@@ -84,7 +84,7 @@ Example response:
 }
 ```
 
-4. Update User (PUT http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
+### 4. Update User (PUT http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
 
 Note: user must be *admin OR user itself*
 
@@ -98,7 +98,7 @@ Example error response:
 }
 ```
 
-5. Delete User (DELETE http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
+### 5. Delete User (DELETE http://localhost:3000/dev/user/{id}) (requires JWT Authorization)
 
 Note: user must be *admin*
 
@@ -112,7 +112,7 @@ Example error response:
 }
 ```
 
-6. Login User (POST http://localhost:3000/dev/user/login)
+### 6. Login User (POST http://localhost:3000/dev/user/login)
 
 If login as admin, don't forget to add "isAdmin: true" in the request body
 
